@@ -1,0 +1,41 @@
+{
+    "resourceName": "cardholders",
+    "type": "list",
+    "form":{
+        "sections": {
+            "search": {
+                "isOpen": true
+            }
+        },
+        "fields": [
+            {
+                "label": "Institution ID",
+                "value": "institutionId"
+            },
+            {
+                "label": "First Name",
+                "value": "firstName"
+            },
+            {
+                "label": "Last Name",
+                "value": "lastName"
+            },
+            {
+                "label": "Card Number",
+                "value": "pan"
+            },
+            {
+                "label": "Status",
+                "value": "status"
+            },
+            {
+                "label": "Address",
+                "value": "address"
+            },
+            {
+                "label": "Taxpayer ID",
+                "value": "taxpayerId"
+            }
+        ]
+    }
+}

@@ -1,0 +1,32 @@
+<div>
+    <div class="tile am-fade-and-scale accordion {{options.css}}" data-bs-collapse ng-if="isVisible() && isCollapseEnabled(expanded)">
+        <h4 class="tile-title text-left" data-bs-collapse-toggle data-ng-click="collapsed = !collapsed" ui-draggable="true" drag="tileId" drag-channel="tile">
+            <div class="anim-icon">
+                <div class="plus-minus" data-ng-class="{'closed' : collapsed}"></div>
+            </div>
+            <strong>{{title}}</strong>
+        </h4>
+        <a class="top-right text-muted" ng-click="toggle($event); maximize();" href="#" ng-if="isMaximizeEnabled() && !expanded">
+            <span class="glyphicon glyphicon-resize-full"></span>
+        </a>
+        <a class="top-right text-muted" ng-click="toggle($event); minimize();" ng-if="isMaximizeEnabled() && expanded">
+            <span class="glyphicon glyphicon-resize-small"></span>
+        </a>
+
+        <div class="padding" data-bs-collapse-target ng-include="template"></div>
+    </div>
+
+    <div class="tile am-fade-and-scale {{options.css}}" ng-if="isVisible() && !isCollapseEnabled(expanded)">
+        <h4 class="tile-title text-left" ui-draggable="true" drag="tileId" drag-channel="tile">
+            <strong>{{title}}</strong>
+        </h4>
+        <a class="top-right text-muted" ng-click="toggle($event); maximize();" href="#" ng-if="isMaximizeEnabled() && !expanded">
+            <span class="glyphicon glyphicon-resize-full"></span>
+        </a>
+        <a class="top-right text-muted" ng-click="toggle($event); minimize();" ng-if="isMaximizeEnabled() && expanded">
+            <span class="glyphicon glyphicon-resize-small"></span>
+        </a>
+
+        <div class="padding" ng-include="template"></div>
+    </div>
+</div>

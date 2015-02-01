@@ -1,0 +1,54 @@
+<div class="container-fluid">
+    <script type="text/ng-template" id="containerTree">
+        <div class="child {{child.css}}" ng-mousemove="enter(child, $event)" ng-mouseleave="leave(child, $event)">
+            <div class="child-buttons" ng-if="isArrangeTilesMode()">
+                Classes: {{child.css}}
+                <a href="#" class="btn btn-default" ng-click="split(child, $event)" ng-if="containsBootstrapColumns(child.css) && isNotOneColumn(child.css)">Split</a>
+                <a href="#" class="btn btn-default" ng-click="delete(child, $event)" ng-if="(child.children == null || child.children.length == 0) && (child.tiles == null || child.tiles.length == 0)">Delete</a>
+            </div>
+            <div ng-if="child.tiles" ng-repeat="tileId in child.tiles">
+                <div ng-show="isArrangeTilesMode() && $index == 0" class="tile-drop-location" ui-on-drop="dropTile($event, $data, child, $index, 'top')" drop-channel="tile" ng-class="{'no-hover':!dragging}"></div>
+
+                <cheese-tile tile-id="{{tileId}}" template="{{getTemplatePath(tileId)}}" dc="dc" maximize="maximize(tileId)" options="tiles[tileId].options"
+                            minimize="minimize(tileId)" expanded="tiles[tileId].expanded">
+                </cheese-tile>
+
+                <div ng-show="isArrangeTilesMode()" class="tile-drop-location" ui-on-drop="dropTile($event, $data, child, $index, 'bottom')" drop-channel="tile"  ng-class="{'no-hover':!dragging}" ng-mousemove="$event.stopPropagation();"></div>
+            </div>
+
+            <div ng-if="isArrangeTilesMode() && (child.children == null || child.children.length == 0) && (child.tiles == null || child.tiles.length == 0)">
+                <div class="tile-drop-location" ui-on-drop="drop($event, $data, child)" drop-channel="tile" ng-class="{'no-hover':!dragging}" style="height: 100%">
+                    &nbsp;
+                </div>
+            </div>
+
+            <div ng-if="child.children">
+                <div ng-repeat="child in child.children" ng-include="'containerTree'"></div>
+            </div>
+
+            <!--
+            <div class="splitter" style="position: absolute; width: 10%; height: 100%; top: 0; left: 0" ng-class="{'no-hover':!dragging}" ui-on-drop="dropSplit($event, $data, child, 'left')" drop-channel="tile">&nbsp;</div>
+
+            <div class="splitter" style="position: absolute; width: 10%; height: 100%; top: 0; left: 90%"  ng-class="{'no-hover':!dragging}" ui-on-drop="dropSplit($event, $data, child, 'right')" drop-channel="tile">&nbsp;</div>
+            -->
+            <cheese-tile-resizer ng-if="isArrangeTilesMode() && containsBootstrapColumns(child.css)" child="child"></cheese-tile-resizer>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="maximizeTree">
+        <div class="{{getMaximizedClass(tileId)}}">
+            <cheese-tile template="{{getTemplatePath(tileId)}}" dc="dc" maximize="maximize(tileId)" options="tiles[tileId].options"
+                        minimize="minimize(tileId)" expanded="tiles[tileId].expanded">
+            </cheese-tile>
+        </div>
+    </script>
+
+    <article class="{{layout.css}}" ng-if="layout" ng-class="{'arrange-tiles':isArrangeTilesMode()}">
+        <div class="col-lg-12 tile-drop-location" ng-show="isArrangeTilesMode()" ui-on-drop="dropNew($event, $data, 'top')" drop-channel="tile" ng-class="{'no-hover':!dragging}">&nbsp;</div>
+
+        <div ng-repeat="child in layout.children" ng-include="'containerTree'" ng-if="maximizedTiles.length == 0"></div>
+        <div ng-repeat="tileId in maximizedTiles" ng-include="'maximizeTree'" ng-if="maximizedTiles.length > 0"></div>
+
+        <div class="col-lg-12 tile-drop-location" ng-show="isArrangeTilesMode()" ui-on-drop="dropNew($event, $data, 'bottom')" drop-channel="tile" ng-class="{'no-hover':!dragging}">&nbsp;</div>
+    </article>
+</div>

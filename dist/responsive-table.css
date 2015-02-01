@@ -1,0 +1,97 @@
+.cheese-fixed {
+  top: 0;
+  position: fixed;
+  width: auto;
+  display: none;
+  border: none;
+  background-color: #ffffff;
+  z-index: 10;
+}
+.cheese-no-more-tables {
+  overflow-x: auto;
+}
+.cheese-no-more-tables .table {
+  font-size: 14px;
+}
+@media only screen and (max-width: 1280px) {
+  .workspace {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  .glyphicon {
+    font-size: 20px;
+    padding-left: 10px;
+  }
+}
+@media only screen and (max-width: 767px) {
+  .cheese-responsive-table {
+    padding-top: 10px;
+  }
+  /* Force table to not be like tables anymore */
+  .cheese-no-more-tables .table table,
+  .cheese-no-more-tables .table thead,
+  .cheese-no-more-tables .table tbody,
+  .cheese-no-more-tables .table th,
+  .cheese-no-more-tables .table td,
+  .cheese-no-more-tables .table tr {
+    display: block;
+  }
+  /* Hide table headers (but not display: none;, for accessibility) */
+  .cheese-no-more-tables .table thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+  .cheese-no-more-tables .table tr {
+    border: 1px solid #ccc;
+    border-bottom: 3px solid #ddd;
+    border-right: 3px solid #ddd;
+    margin: 15px 0px;
+    padding: 5px 0px;
+    background-color: #f4f4f4;
+  }
+  .cheese-no-more-tables .table td {
+    /* Behave  like a "row" */
+    background-color: #f4f4f4;
+    border: none;
+    border-bottom: 0px;
+    position: relative;
+    padding-left: 50%;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    white-space: normal;
+    text-align: left !important;
+  }
+  .cheese-no-more-tables .table td:before {
+    /* Now like a table header */
+    position: absolute;
+    /* Top/left values mimic padding */
+    top: 6px;
+    left: 6px;
+    width: 45%;
+    padding-right: 10px;
+    white-space: nowrap;
+    text-align: left;
+    font-weight: bold;
+  }
+  /*
+  Label the data
+  */
+  .cheese-no-more-tables .table td:before {
+    content: attr(data-title);
+  }
+}
+.table td.text-align-left,
+.table th.text-align-left {
+  text-align: left !important;
+}
+.table {
+  border-collapse: inherit;
+}
+.st-sort-ascent:before {
+  content: '\25B2';
+}
+.st-sort-descent:before {
+  content: '\25BC';
+}
+/*# sourceMappingURL=responsive-table.css.map */

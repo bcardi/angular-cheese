@@ -1,0 +1,56 @@
+<!--
+    Todo: Define search form layout
+    Todo: Define search results layout
+-->
+<div>
+    <accordion close-others=false>
+        <accordion-group is-open="dc.metadata.form.sections.search.isOpen"
+                         is-disabled="false">
+
+            <accordion-heading>
+                Search&nbsp;
+                <crud-search-values search-model="dc.context.resourceService.searchModel"></crud-search-values>
+                <i class="pull-right glyphicon"
+                   ng-class="{'glyphicon-chevron-down': dc.metadata.form.sections.search.isOpen, 'glyphicon-chevron-right': !dc.metadata.form.sections.search.isOpen}"></i>
+            </accordion-heading>
+
+            <form class="form-inline"
+                  novalidate>
+                <!-- search form layout -->
+                <div class="form-group">
+                    <label for="taxpayerId" class="control-label">Taxpayer ID</label>
+                    <input crud-autofocus="dc.resetFocus" type="text" id="taxpayerId" name="taxpayerId" ng-model="dc.searchModel.taxpayerId">
+                </div>
+                <div class="form-group">
+                    <label for="lastName" class="control-label">Last Name</label>
+                    <input crud-autofocus="dc.resetFocus" type="text" id="lastName" name="lastName" ng-model="dc.searchModel.lastName">
+                </div>
+                <div class="form-group">
+                    <label for="firstName" class="control-label">First Name</label>
+                    <input crud-autofocus="dc.resetFocus" type="text" id="firstName" name="firstName" ng-model="dc.searchModel.firstName">
+                </div>
+                <button class="btn btn-primary"
+                        ng-click="dc.getList()">Search
+                </button>
+                <button class="btn btn-default"
+                        ng-click="dc.clearSearchModel()">Clear
+                </button>
+            </form>
+
+        </accordion-group>
+    </accordion>
+</div>
+<div ng-show="dc.viewModel.length > 0">
+    <section>
+        <p>Use the Find field to locate items within the search results set.</p>
+        <input ng-model="query"
+               placeholder="Find text">
+    </section>
+    <!-- search results layout -->
+    <cheese-responsive-table items="dc.viewModel" metadata="dc.metadata.form.fields" show="dc.showItem(item)" filter="query"/>
+</div>
+
+<!--
+<div class="gridStyle" ng-grid="dc.primaryGridOptions">
+</div>
+-->

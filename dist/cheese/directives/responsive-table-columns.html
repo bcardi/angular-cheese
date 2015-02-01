@@ -1,0 +1,21 @@
+<div class="aside">
+    <div class="aside-dialog">
+        <div class="aside-content">
+            <div class="aside-header">
+                <button type="button" class="close" ng-click="$hide()"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <h4 class="aside-title">Select columns</h4>
+            </div>
+            <form>
+                <div class="aside-body">
+                    <div ng-repeat="heading in fields">
+                        <input type="checkbox" name="{{heading.value}}" ng-model="heading.checked" ng-checked="heading.checked"/>
+                        {{heading.label}}
+                    </div>
+                </div>
+                <div class="aside-footer">
+                    <button type="button" class="btn btn-sm" ng-click="updateColumns(this.form); this.$hide();">Apply</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

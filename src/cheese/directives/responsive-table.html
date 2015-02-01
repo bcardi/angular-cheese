@@ -1,0 +1,46 @@
+<div class="cheese-no-more-tables">
+    <div class="cheese-table-header">
+        <div class="pull-right">
+            <a ng-if="search" class="text-muted"
+               tabindex="-1"
+               data-template="lib/angular-cheese/dist/cheese/directives/responsive-table-search.html"
+               data-placement="right"
+               data-animation="am-fade-and-slide-right"
+               data-container="body"
+               data-bs-aside="aside">
+                <span class="glyphicon glyphicon-filter"></span>
+            </a>
+
+            <a ng-if="allowColumnSelection" class="text-muted"
+               tabindex="-1"
+               data-template="lib/angular-cheese/dist/cheese/directives/responsive-table-columns.html"
+               data-placement="right"
+               data-animation="am-fade-and-slide-right"
+               data-container="body"
+               data-bs-aside="aside">
+                <span class="glyphicon glyphicon-cog"></span>
+            </a>
+        </div>
+    </div>
+    <table st-table="items" class="table table-striped table-hover cheese-responsive-table">
+        <thead>
+        <tr>
+            <th ui-draggable="true" drag="heading.value" data-drag-data="{{heading.value}}" drag-channel="table" drop-channel="table" ui-on-drop="drop($event, $data, heading.value)" st-sort="{{heading.value}}" ng-repeat="heading in listFields" ng-class="{'text-align-left': !heading.type}">{{heading.label}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="item in filteredItems = (items | filter:filter)" ng-click="show({item:item})" repeat-last>
+            <td ng-repeat="field in listFields" data-title="{{field.label}}" ng-class="{'text-align-left': !field.type}"><span class="{{class(field, item[field.value])}}" ng-bind-html="format(field, item)"></span></td>
+        </tr>
+        <tr ng-if="filteredItems.length == 0">
+            <td colspan="15">No results found.</td></tr>
+        </tbody>
+    </table>
+    <table st-table="items" class="table table-striped table-hover cheese-fixed" style="display:none">
+        <thead>
+        <tr>
+            <th ui-draggable="true" drag="heading.value" drag-channel="table" drop-channel="table" ui-on-drop="drop($event, $data, heading.value)" st-sort="{{heading.value}}" ng-repeat="heading in listFields" ng-class="{'text-align-left': !heading.type}">{{heading.label}}</th>
+        </tr>
+        </thead>
+    </table>
+</div>

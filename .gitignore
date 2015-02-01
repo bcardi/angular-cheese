@@ -1,0 +1,23 @@
+###############################
+# WebStorm project files
+###############################
+.idea/
+
+###############################
+# npm & bower dependencies
+###############################
+**/lib/
+**/bower_components/
+**/node_modules/
+
+###############################
+# App compile output files
+###############################
+*.map
+samples/simple/app/**/*.js
+samples/simple/app/**/*.css
+samples/simple/test/**/*.js
+src/**/*.js
+src/**/*.css
+src/**/*.d.ts
+!src/cheese/typings/**/*.d.ts

@@ -1,0 +1,44 @@
+<div class="aside">
+    <div class="aside-dialog">
+        <div class="aside-content">
+            <div class="aside-header">
+                <button type="button" class="close" ng-click="$hide()"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <h4 class="aside-title">Search</h4>
+            </div>
+            <form>
+                <div class="aside-body">
+                    <div ng-repeat="heading in searchFields">
+                        <div class="form-group" ng-if="heading.searchType != null && heading.searchType == 'daterange'" style="padding-bottom: 25px">
+                            <label>{{heading.label}}</label>
+                            <input class="form-control" type="text" name="{{heading.value + '.start'}}"
+                                   bs-datepicker
+                                   autoclose="true"
+                                   ng-model="searchModel[heading.value].start"
+                                   placeholder="Start Date"
+                                   date-format="MM/dd/yyyy"
+                                   date-type="iso"
+                                   max-date="{{searchModel[heading.value].end || 'today'}}" />
+                            to
+                            <input class="form-control" type="text" name="{{heading.value + '.end'}}"
+                                   bs-datepicker
+                                   autoclose="true"
+                                   ng-model="searchModel[heading.value].end"
+                                   placeholder="End Date"
+                                   date-format="MM/dd/yyyy"
+                                   date-type="iso"
+                                   min-date="{{searchModel[heading.value].start}}"
+                                   max-date="today"/>
+                        </div>
+                        <div class="form-group" ng-if="heading.searchType == null">
+                            <label>{{heading.label}}</label>
+                            <input class="form-control" type="text" name="{{heading.value}}" ng-model="searchModel[heading.value]" />
+                        </div>
+                    </div>
+                </div>
+                <div class="aside-footer">
+                    <button type="submit" class="btn btn-sm" ng-click="apply()">Apply</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

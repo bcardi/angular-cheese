@@ -1,2 +1,0 @@
-# angular-cheese
-Angular library

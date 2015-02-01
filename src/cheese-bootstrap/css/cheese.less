@@ -1,0 +1,62 @@
+@import "../../../lib/bootstrap/less/bootstrap";
+
+/* Customizations */
+@brand-primary:              #8dc63f;
+@gray-dark:                  #444;
+@btn-primary-bg:             #26498a;
+@link-color:                 #26498a;
+@label-color:                #777;
+@headings-color:             #007d8a;
+@state-danger-text:          #990000;
+
+.navbar-brand {
+  padding-top: 10px;
+}
+
+.navbar-brand .logo,
+.navbar-brand .sitename {
+  display: table-cell;
+  height: 100%;
+  vertical-align: middle;
+  color: @brand-primary;
+  font-size: 24px;
+}
+.navbar-brand .sitename {
+  vertical-align: bottom;
+  padding-left: 5px;
+}
+
+.nav-tabs > a,
+.nav-tabs > a:hover,
+.nav-tabs > a:focus {
+  color: @label-color;
+}
+
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+  color: @label-color;
+  font-weight: bold;
+}
+
+label {
+  color: @label-color;
+}
+
+.form-horizontal .control-label {
+  text-align: left;
+}
+
+.panel-title {
+  color: @headings-color;
+}
+
+.workspace {
+}
+
+.workspace .workspace-header {
+}
+
+.workspace .workspace-body {
+  padding-top: 20px;
+}
