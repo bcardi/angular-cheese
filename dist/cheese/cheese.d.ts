@@ -1,19 +1,19 @@
 /// <reference path="typings/angularjs/angular.d.ts" />
 /// <reference path="typings/lodash/lodash.d.ts" />
 /**
-* Created by Bob on 5/17/2014.
-*/
+ * Created by Bob on 5/17/2014.
+ */
 declare var filters: ng.IModule;
 /**
-* Created by Bob on 6/17/2014.
-*/
+ * Created by Bob on 6/17/2014.
+ */
 interface IMetadataService {
     resource: any;
     get(params: any): ng.IPromise<any>;
 }
 /**
-* Created by Bob on 7/8/2014.
-*/
+ * Created by Bob on 7/8/2014.
+ */
 interface IResourceService {
     name: string;
     type: string;
@@ -34,8 +34,8 @@ interface IResourceService {
     deleteItem(params: any, item: any): ng.IPromise<any>;
 }
 /**
-* Created by e1040222 on 10/6/2014.
-*/
+ * Created by e1040222 on 10/6/2014.
+ */
 interface IAuthService {
     name: string;
     type: string;
@@ -49,12 +49,12 @@ interface IAuthService {
     isAuthorized(authorizedRoles: string[]): boolean;
 }
 declare class PageInfo {
-    public title: string;
-    public setTitle(title: string): void;
+    title: string;
+    setTitle(title: string): void;
 }
 /**
-* Created by Bob on 6/17/2014.
-*/
+ * Created by Bob on 6/17/2014.
+ */
 interface IControllerContext {
     resourceName: string;
     formTag: string;
@@ -65,119 +65,134 @@ interface IControllerContext {
     viewId?: string;
 }
 /**
-* Created by Bob on 5/5/2014.
-*/
+ * Created by Bob on 5/5/2014.
+ */
 /**
-* @area api
-* @module cheese
-* @ngdoc type
-* @name BaseController
-* @param {object} context ????.
-* @description
-* ????
-*/
+ * @area api
+ * @module cheese
+ * @ngdoc type
+ * @name BaseController
+ * @param {object} context ????.
+ * @description
+ * ????
+ */
 declare class BaseController {
-    public ng: any;
-    public context: IControllerContext;
-    public resetFocus: boolean;
-    public isModelLoaded: boolean;
-    public showEditable: boolean;
-    public isReadonly: boolean;
-    public viewModel: any;
-    public searchModel: any;
-    public metadataBase: any;
-    public metadata: any;
-    public messages: string;
-    public primaryGridOptions: any;
-    public autoLoad: boolean;
-    public $injector: any;
+    ng: any;
+    context: IControllerContext;
+    resetFocus: boolean;
+    isModelLoaded: boolean;
+    showEditable: boolean;
+    isReadonly: boolean;
+    viewModel: any;
+    searchModel: any;
+    metadataBase: any;
+    metadata: any;
+    messages: string;
+    primaryGridOptions: any;
+    autoLoad: boolean;
+    $injector: any;
     private $scope;
-    public pathFields: any;
-    public activeTab: number;
-    public clearSearchModel(): void;
+    pathFields: any;
+    activeTab: number;
+    clearSearchModel(): void;
     static addNgRef(context: any, item: any): void;
     constructor($injector: any, context: IControllerContext);
-    public getActiveTab(): number;
-    public init(): void;
-    public loadData(): void;
-    public getFormMetadata(): void;
-    public onGetFormMetadataSuccess(result: any): void;
-    public isTrue(value: any, defaultValue: any): boolean;
-    public collapseAll(): void;
-    public expandAll(): void;
-    public onGetFormMetadataError(result: any): void;
-    public getData(): void;
-    public getList(): void;
-    public onGetListSuccess(result: any): void;
-    public onGetListError(result: any): void;
-    public createItem(item: any): void;
-    public onCreateSuccess(result: any): void;
-    public onCreateError(result: any): void;
-    public getProperty(obj: any, value: string): any;
-    public getNewPath(item: any): string;
-    public showItem(item: any): void;
-    public showPreviousItem(): void;
-    public hasPreviousItem(): boolean;
-    public showNextItem(): void;
-    public hasNextItem(): boolean;
-    public getItem(id: any): void;
-    public onGetItemSuccess(result: any): void;
-    public refreshMetadata(metadata: any): void;
-    public onGetItemError(result: any): void;
-    public updateItem(item: any, params?: any): void;
-    public onUpdateItemSuccess(result: any): void;
-    public onUpdateItemError(result: any): void;
-    public deleteItem(item: any): void;
-    public onDeleteItemSuccess(result: any): void;
-    public onDeleteItemError(result: any): void;
-    public doSubmit(isValid: any): void;
-    public validateForm(thisForm: any): string;
+    getActiveTab(): number;
+    init(): void;
+    loadData(): void;
+    getFormMetadata(): void;
+    onGetFormMetadataSuccess(result: any): void;
+    isTrue(value: any, defaultValue: any): boolean;
+    collapseAll(): void;
+    expandAll(): void;
+    onGetFormMetadataError(result: any): void;
+    getData(): void;
+    getList(): void;
+    onGetListSuccess(result: any): void;
+    onGetListError(result: any): void;
+    createItem(item: any): void;
+    onCreateSuccess(result: any): void;
+    onCreateError(result: any): void;
+    getProperty(obj: any, value: string): any;
+    getNewPath(item: any): string;
+    showItem(item: any): void;
+    showPreviousItem(): void;
+    hasPreviousItem(): boolean;
+    showNextItem(): void;
+    hasNextItem(): boolean;
+    getItem(id: any): void;
+    onGetItemSuccess(result: any): void;
+    refreshMetadata(metadata: any): void;
+    onGetItemError(result: any): void;
+    updateItem(item: any, params?: any): void;
+    onUpdateItemSuccess(result: any): void;
+    onUpdateItemError(result: any): void;
+    deleteItem(item: any): void;
+    onDeleteItemSuccess(result: any): void;
+    onDeleteItemError(result: any): void;
+    doSubmit(isValid: any): void;
+    validateForm(thisForm: any): string;
     /**
-    * Checks if the given string is a resolve for the current state. If it is,
-    * it will return the resolved data.
-    *
-    * @param resolveName: The name of the resolve
-    * @returns data from the resolve, or undefined if none exists
-    */
-    public resolves(resolveName: string): any;
-    public getParameters(): {};
-    public format(fieldInfo: any, value: any): string;
-    public class(fieldInfo: any, value: any): string;
-    public getDefaultPageTitle(): string;
-    public setPageTitle(pageName: string): void;
+     * Checks if the given string is a resolve for the current state. If it is,
+     * it will return the resolved data.
+     *
+     * @param resolveName: The name of the resolve
+     * @returns data from the resolve, or undefined if none exists
+     */
+    resolves(resolveName: string): any;
+    getParameters(): {};
+    format(fieldInfo: any, value: any): string;
+    class(fieldInfo: any, value: any): string;
+    getDefaultPageTitle(): string;
+    setPageTitle(pageName: string): void;
     private layoutBeforeEdit;
-    public toggleArrangeTiles(): void;
-    public isArrangeTilesMode(): any;
-    public saveTileLayout(): void;
-    public cancelTileLayout(): void;
-    public resetTileLayout(): void;
-}
-declare class BaseDetailController extends BaseController {
-    constructor($injector: any, context: any);
-    public doSubmit(isValid: any): void;
-}
-declare class BaseEditController extends BaseController {
-    constructor($injector: any, context: any);
-    public getData(): void;
-    public doSubmit(isValid: any): void;
-}
-declare class BaseListController extends BaseController {
-    public getData(): void;
-}
-declare class BaseNewController extends BaseController {
-    public init(): void;
-    public doSubmit(isValid: any): void;
-}
-declare class BaseShowController extends BaseController {
-    constructor($injector: any, context: any);
-    public getData(): void;
-    public doSubmit(isValid: any): void;
+    toggleArrangeTiles(): void;
+    isArrangeTilesMode(): any;
+    saveTileLayout(): void;
+    cancelTileLayout(): void;
+    resetTileLayout(): void;
 }
 /**
-* Created by Bob on 5/13/2014.
-*/
+ * Created by Bob on 5/6/2014.
+ */
+declare class BaseDetailController extends BaseController {
+    constructor($injector: any, context: any);
+    doSubmit(isValid: any): void;
+}
+/**
+ * Created by Bob on 5/6/2014.
+ */
+declare class BaseEditController extends BaseController {
+    constructor($injector: any, context: any);
+    getData(): void;
+    doSubmit(isValid: any): void;
+}
+/**
+ * Created by Bob on 5/6/2014.
+ */
+declare class BaseListController extends BaseController {
+    getData(): void;
+}
+/**
+ * Created by Bob on 5/6/2014.
+ */
+declare class BaseNewController extends BaseController {
+    init(): void;
+    doSubmit(isValid: any): void;
+}
+/**
+ * Created by Bob on 5/6/2014.
+ */
+declare class BaseShowController extends BaseController {
+    constructor($injector: any, context: any);
+    getData(): void;
+    doSubmit(isValid: any): void;
+}
+/**
+ * Created by Bob on 5/13/2014.
+ */
 declare class NavigationController {
     private $location;
     constructor($location: any);
-    public isActive(viewLocation: string): boolean;
+    isActive(viewLocation: string): boolean;
 }

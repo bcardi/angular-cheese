@@ -1,8 +1,8 @@
-///<reference path='../cheese/cheese.d.ts' />
+///<reference path='../cheese/cheese.d.ts' /> 
 ///<reference path='references.ts' />
 /**
-* Created by Bob on 5/4/2014.
-*/
+ * Created by Bob on 5/4/2014.
+ */
 var MetadataService = (function () {
     function MetadataService($resource, $injector) {
         "use strict";
@@ -15,8 +15,5 @@ var MetadataService = (function () {
     };
     return MetadataService;
 })();
-
-angular.module('cheese').factory('MetadataService', ['$resource', '$injector', function ($resource, $injector) {
-        return new MetadataService($resource, $injector);
-    }]);
+angular.module('cheese').factory('MetadataService', ['$resource', '$injector', function ($resource, $injector) { return new MetadataService($resource, $injector); }]);
 //# sourceMappingURL=metadata-service-file.js.map
