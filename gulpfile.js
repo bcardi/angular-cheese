@@ -53,6 +53,9 @@ gulp.task('compile:typescript',function(cb){
 
 gulp.task('compile:typescript-auth',function(cb) {
     //auth
+    gulp.src(['src/cheese-auth-elasticsearch/auth-service.ts'])
+        .pipe(typescript({sourcemap: true, declaration: true, logErrors: true, resolve: true, out: 'auth-service.js', outDir: 'src/cheese-auth-elasticsearch'}))
+        .pipe(gulp.dest('src/cheese-auth-elasticsearch'));
     return gulp.src(['src/cheese-auth-web-api/auth-service.ts'])
         .pipe(typescript({sourcemap: true, declaration: true, logErrors: true, resolve: true, out: 'auth-service.js', outDir: 'src/cheese-auth-web-api'}))
         .pipe(gulp.dest('src/cheese-auth-web-api'));
@@ -71,6 +74,12 @@ gulp.task('compile:typescript-meta',function(cb) {
 
 gulp.task('compile:typescript-resource',function(cb) {
     //resource
+    gulp.src(['src/cheese-resource-couchdb/resource-service.ts'])
+        .pipe(typescript({sourcemap: true,declaration:true,logErrors: true,resolve:true,out:'resource-service.js',outDir:'src/cheese-resource-couchdb'}))
+        .pipe(gulp.dest('src/cheese-resource-couchdb'));
+    gulp.src(['src/cheese-resource-elasticsearch/resource-service.ts'])
+        .pipe(typescript({sourcemap: true,declaration:true,logErrors: true,resolve:true,out:'resource-service.js',outDir:'src/cheese-resource-elasticsearch'}))
+        .pipe(gulp.dest('src/cheese-resource-elasticsearch'));
     return gulp.src(['src/cheese-resource-web-api/resource-service.ts'])
         .pipe(typescript({sourcemap: true,declaration:true,logErrors: true,resolve:true,out:'resource-service.js',outDir:'src/cheese-resource-web-api'}))
         .pipe(gulp.dest('src/cheese-resource-web-api'));
