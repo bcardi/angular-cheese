@@ -67,4 +67,3 @@ angular.module('cheese').service('Session', function () {
         this.landingPage = null;
     };
 });
-//# sourceMappingURL=auth-service.js.map

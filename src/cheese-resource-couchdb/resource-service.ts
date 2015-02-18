@@ -1,15 +1,13 @@
 ///<reference path='references.ts' />
 
-/**
- * Created by e1009811 on 5/1/2014.
- */
-
 class ResourceService implements IResourceService {
 
-    public name: string;
+    public name:string;
     public type: string;
     public resource: any;
     public items: any[];
+    public parent: any;
+    public params: any[];
     public currentItem: any;
     public currentItemIndex: number;
     public searchModel: any;
@@ -19,7 +17,7 @@ class ResourceService implements IResourceService {
     public config: any;
     public $injector: any;
 
-    constructor($resource, $injector) {
+    constructor($injector, $resource) {
         "use strict";
         this.name = "couchdb";
         this.type = "nosql";
@@ -99,9 +97,14 @@ class ResourceService implements IResourceService {
         "use strict";
         return this.resource.delete({resourceName: params.resourceName}, item).$promise;
     }
+
+    public setParameters(params:any) {
+        "use strict";
+        this.params = params;
+    }
 }
 
-angular.module('cheese').factory('ResourceService', ['$resource', '$injector', ($resource, $injector) => new ResourceService($resource, $injector)]);
+angular.module('cheese').factory('ResourceService', ['$injector', '$resource', ResourceService]);
 
 /*
  Create "_design/api" document in database

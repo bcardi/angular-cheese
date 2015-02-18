@@ -8,12 +8,18 @@
 
 class BaseDetailController extends BaseController {
 
-    constructor($injector, context) {
+    init(){
         "use strict";
-        BaseController.addNgRef(context,'$stateParams');
+        this.context.resourceScope = "item";
+        super.init();
+    }
+
+/*    constructor($injector, context) {
+        "use strict";
+        BaseController.addDependency(context,'$stateParams');
         super($injector, context);
         this.getItem(this.ng.$stateParams.id);
-    }
+    }*/
 
     doSubmit(isValid){
         "use strict";

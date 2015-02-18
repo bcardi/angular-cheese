@@ -951,8 +951,9 @@ angular.module('cheese').service('PageInfo', PageInfo);
  * ????
  */
 var BaseController = (function () {
-    function BaseController($injector, context) {
+    function BaseController($injector, resourceService, metadataService) {
         var _this = this;
+        this.context = {};
         this.resetFocus = true;
         this.isModelLoaded = false;
         this.showEditable = false;
@@ -968,28 +969,37 @@ var BaseController = (function () {
         this.activeTab = 0;
         "use strict";
         this.$injector = $injector;
-        this.context = context;
-        this.setPageTitle(this.getDefaultPageTitle());
+        this.context = this.context || {};
+        this.context.resourceService = resourceService;
+        this.context.metadataService = metadataService;
+        this.context.viewId = this.context.viewId || "default";
         // Load required angular references
-        var ngRefs = _.union(['$location', '$state', '$stateParams', 'Formatter'], this.context.ngRefs);
+        var dependencies = _.union(['cheeseResourceName', 'cheeseResourceNameSingular', '$location', '$state', '$stateParams', 'Formatter'], this.context.dependencies);
         this.ng = {};
-        _.forEach(ngRefs, function (item) { return _this.ng[item] = $injector.get(item); });
+        _.forEach(dependencies, function (item) { return _this.ng[item] = $injector.get(item); });
+        if (this.ng.cheeseResourceName) {
+            this.context.resourceName = this.context.resourceName || this.ng.cheeseResourceName;
+        }
+        if (this.ng.cheeseResourceNameSingular) {
+            this.context.resourceNameSingular = this.context.resourceNameSingular || this.ng.cheeseResourceNameSingular;
+        }
         if (_.size(this.getParameters()) > 0) {
             this.autoLoad = true;
             this.context.resourceService.setParameters(this.getParameters());
         }
         this.init();
+        this.setPageTitle(this.getDefaultPageTitle());
         //this.refreshMetadata({});
         this.loadData();
     }
     BaseController.prototype.clearSearchModel = function () {
         this.searchModel = {};
     };
-    BaseController.addNgRef = function (context, item) {
-        if (!context.ngRefs) {
-            context.ngRefs = [];
+    BaseController.addDependency = function (context, item) {
+        if (!context.dependencies) {
+            context.dependencies = [];
         }
-        context.ngRefs.push(item);
+        context.dependencies.push(item);
     };
     BaseController.prototype.getActiveTab = function () {
         if (this.activeTab < 0)
@@ -1008,12 +1018,12 @@ var BaseController = (function () {
         var _this = this;
         var cachedMetadata = {};
         try {
-            cachedMetadata = this.context.resourceService.metadata[this.context.formTag];
+            cachedMetadata = this.context.resourceService.metadata[this.context.resourceScope];
         }
         catch (e) {
         }
         if (_.isEmpty(cachedMetadata)) {
-            this.context.metadataService.get({ resourceName: this.context.resourceName, formTag: this.context.formTag }).then(function (result) { return _this.onGetFormMetadataSuccess(result); }).catch(function (result) { return _this.onGetFormMetadataError(result); });
+            this.context.metadataService.get({ resourceName: this.context.resourceName, resourceScope: this.context.resourceScope }).then(function (result) { return _this.onGetFormMetadataSuccess(result); }).catch(function (result) { return _this.onGetFormMetadataError(result); });
         }
         else {
             this.onGetFormMetadataSuccess(cachedMetadata);
@@ -1227,7 +1237,7 @@ var BaseController = (function () {
             _.merge(this.metadata, this.metadataBase, metadata);
         }
         try {
-            this.context.resourceService.metadata[this.context.formTag] = this.metadata;
+            this.context.resourceService.metadata[this.context.resourceScope] = this.metadata;
         }
         catch (e) {
         }
@@ -1345,23 +1355,23 @@ var BaseController = (function () {
         return this.ng.Formatter.formatClass(fieldInfo.type, value);
     };
     BaseController.prototype.getDefaultPageTitle = function () {
-        if (this.context.title) {
-            return this.context.title;
+        if (this.context.pageTitle) {
+            return this.context.pageTitle;
         }
         var resource = this.context.resourceName.substring(0, 1).toUpperCase() + this.context.resourceName.substring(1, this.context.resourceName.length - 1);
-        var type = this.context.formTag.substring(0, 1).toUpperCase() + this.context.formTag.substring(1);
-        var title;
+        var type = this.context.resourceScope.substring(0, 1).toUpperCase() + this.context.resourceScope.substring(1);
+        var pageTitle;
         switch (type) {
             case 'List':
-                title = resource + ' Search';
+                pageTitle = resource + ' Search';
                 break;
             case 'Detail':
-                title = resource + ' Detail';
+                pageTitle = resource + ' Detail';
                 break;
             default:
-                title = resource;
+                pageTitle = resource;
         }
-        return title;
+        return pageTitle;
     };
     BaseController.prototype.setPageTitle = function (pageName) {
         this.$injector.get('PageInfo').setTitle(pageName);
@@ -1384,7 +1394,7 @@ var BaseController = (function () {
         object['views'][this.context.viewId] = {
             layout: this.metadata.views[this.context.viewId].layout
         };
-        this.$injector.get('$http').post(this.$injector.get('ApplicationConfig').apiBasePath + 'api/metadata/' + this.context.resourceName + '/' + this.context.formTag, object);
+        this.$injector.get('$http').post(this.$injector.get('ApplicationConfig').apiBasePath + 'api/metadata/' + this.context.resourceName + '/' + this.context.resourceScope, object);
     };
     BaseController.prototype.cancelTileLayout = function () {
         this.metadata.views[this.context.viewId].layout = this.layoutBeforeEdit;
@@ -1396,8 +1406,9 @@ var BaseController = (function () {
         var field = 'views.' + this.context.viewId + '.layout';
         var object = {};
         object[field] = this.metadata.views[this.context.viewId].layout;
-        this.$injector.get('$http').post(this.$injector.get('ApplicationConfig').apiBasePath + 'api/metadata/' + this.context.resourceName + '/' + this.context.formTag, object);
+        this.$injector.get('$http').post(this.$injector.get('ApplicationConfig').apiBasePath + 'api/metadata/' + this.context.resourceName + '/' + this.context.resourceScope, object);
     };
+    BaseController.$inject = ["$scope", "MyService"];
     return BaseController;
 })();
 ///<reference path='../references.ts' />
@@ -1413,12 +1424,20 @@ var __extends = this.__extends || function (d, b) {
 //import BaseController = require('./base-controller');
 var BaseDetailController = (function (_super) {
     __extends(BaseDetailController, _super);
-    function BaseDetailController($injector, context) {
-        "use strict";
-        BaseController.addNgRef(context, '$stateParams');
-        _super.call(this, $injector, context);
-        this.getItem(this.ng.$stateParams.id);
+    function BaseDetailController() {
+        _super.apply(this, arguments);
     }
+    BaseDetailController.prototype.init = function () {
+        "use strict";
+        this.context.resourceScope = "item";
+        _super.prototype.init.call(this);
+    };
+    /*    constructor($injector, context) {
+            "use strict";
+            BaseController.addDependency(context,'$stateParams');
+            super($injector, context);
+            this.getItem(this.ng.$stateParams.id);
+        }*/
     BaseDetailController.prototype.doSubmit = function (isValid) {
         "use strict";
         this.updateItem(this.viewModel);
@@ -1432,11 +1451,14 @@ var BaseDetailController = (function (_super) {
 //import BaseController = require('./base-controller');
 var BaseEditController = (function (_super) {
     __extends(BaseEditController, _super);
-    function BaseEditController($injector, context) {
-        "use strict";
-        BaseController.addNgRef(context, '$stateParams');
-        _super.call(this, $injector, context);
+    function BaseEditController() {
+        _super.apply(this, arguments);
     }
+    BaseEditController.prototype.init = function () {
+        "use strict";
+        this.context.resourceScope = "item";
+        _super.prototype.init.call(this);
+    };
     BaseEditController.prototype.getData = function () {
         "use strict";
         this.getItem(this.ng.$stateParams.id);
@@ -1457,6 +1479,11 @@ var BaseListController = (function (_super) {
     function BaseListController() {
         _super.apply(this, arguments);
     }
+    BaseListController.prototype.init = function () {
+        "use strict";
+        this.context.resourceScope = "list";
+        _super.prototype.init.call(this);
+    };
     BaseListController.prototype.getData = function () {
         "use strict";
         this.searchModel = !!this.context.resourceService.searchModel ? this.context.resourceService.searchModel : this.searchModel;
@@ -1486,6 +1513,7 @@ var BaseNewController = (function (_super) {
     }
     BaseNewController.prototype.init = function () {
         "use strict";
+        this.context.resourceScope = "item";
         this.showEditable = true;
         this.isReadonly = false;
         _super.prototype.init.call(this);
@@ -1503,11 +1531,14 @@ var BaseNewController = (function (_super) {
 //import BaseController = require('./base-controller');
 var BaseShowController = (function (_super) {
     __extends(BaseShowController, _super);
-    function BaseShowController($injector, context) {
-        "use strict";
-        BaseController.addNgRef(context, '$stateParams');
-        _super.call(this, $injector, context);
+    function BaseShowController() {
+        _super.apply(this, arguments);
     }
+    BaseShowController.prototype.init = function () {
+        "use strict";
+        this.context.resourceScope = "item";
+        _super.prototype.init.call(this);
+    };
     BaseShowController.prototype.getData = function () {
         "use strict";
         this.getItem(this.ng.$stateParams.id);
@@ -1545,4 +1576,3 @@ angular.module('cheese').controller('NavigationController', ['$location', functi
 ///<reference path='directives/index.ts' />
 ///<reference path='services/index.ts' />
 ///<reference path='controllers/index.ts' /> 
-//# sourceMappingURL=cheese.js.map

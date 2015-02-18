@@ -1,9 +1,5 @@
 ///<reference path='references.ts' />
 
-/**
- * Created by Bob on 5/4/2014.
- */
-
 class ResourceService implements IResourceService {
 
     public name:string;
@@ -21,7 +17,7 @@ class ResourceService implements IResourceService {
     public config: any;
     public $injector: any;
 
-    constructor($resource, $injector) {
+    constructor($injector, $resource) {
         "use strict";
         this.name = "web-api";
         this.type = "service";
@@ -140,9 +136,9 @@ class ResourceService implements IResourceService {
         return httpResponse.data;
     }
 
-    public setParameters(params:any[]): void {
+    public setParameters(params:any): void {
         this.params = params;
     }
 }
 
-angular.module('cheese').factory('ResourceService', ['$resource', '$injector', ($resource, $injector) => new ResourceService($resource, $injector)]);
+angular.module('cheese').factory('ResourceService', ['$injector', '$resource', ResourceService]);

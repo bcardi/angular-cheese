@@ -4,6 +4,8 @@ declare class ResourceService implements IResourceService {
     type: string;
     resource: any;
     items: any[];
+    parent: any;
+    params: any[];
     currentItem: any;
     currentItemIndex: number;
     searchModel: any;
@@ -12,7 +14,7 @@ declare class ResourceService implements IResourceService {
     searchFilter: string;
     config: any;
     $injector: any;
-    constructor($resource: any, $injector: any);
+    constructor($injector: any, $resource: any);
     onGetListSuccess(httpResponse: any): any;
     onGetListError(httpResponse: any): any;
     getList(params: any): ng.IPromise<any>;
@@ -20,4 +22,5 @@ declare class ResourceService implements IResourceService {
     getItem(params: any): ng.IPromise<any>;
     updateItem(params: any, item: any): ng.IPromise<any>;
     deleteItem(params: any, item: any): ng.IPromise<any>;
+    setParameters(params: any): void;
 }

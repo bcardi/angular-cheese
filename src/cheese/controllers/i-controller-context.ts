@@ -3,10 +3,11 @@
  */
 interface IControllerContext {
     resourceName: string;
-    formTag: string;
-    ngRefs: string[];
-    resourceService: any;
-    metadataService: any;
-    title?: string;
-    viewId?: string;
+    resourceNameSingular: string;
+    resourceScope: string;
+    resourceService: IResourceService;
+    metadataService: IMetadataService;
+    pageTitle: string;
+    viewId: string;
+    dependencies: any;
 }

@@ -8,6 +8,12 @@
 
 class BaseListController extends BaseController {
 
+    init(){
+        "use strict";
+        this.context.resourceScope = "list";
+        super.init();
+    }
+
     getData(){
         "use strict";
         this.searchModel = !!this.context.resourceService.searchModel? this.context.resourceService.searchModel: this.searchModel;

@@ -12,12 +12,12 @@ class MetadataService implements IMetadataService {
     constructor($resource, $injector) {
         "use strict";
         this.config = $injector.get('ApplicationConfig');
-        this.resource = $resource('app/:resourceName/:formTag-metadata.json',{ },{ } );
+        this.resource = $resource('app/:resourceName/:resourceScope-metadata.json',{ },{ } );
     }
 
     public get(params):ng.IPromise<any> {
         "use strict";
-        return this.resource.get({resourceName: params.resourceName, formTag: params.formTag}).$promise;
+        return this.resource.get({resourceName: params.resourceName, resourceScope: params.resourceScope}).$promise;
     }
 }
 

@@ -10,6 +10,7 @@ class BaseNewController extends BaseController {
 
     init(){
         "use strict";
+        this.context.resourceScope = "item";
         this.showEditable = true;
         this.isReadonly = false;
         super.init();

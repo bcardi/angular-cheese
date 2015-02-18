@@ -3,10 +3,12 @@
  */
 interface IResourceService{
 
-    name: string;
+    name:string;
     type: string;
     resource: any;
     items: any[];
+    parent: any;
+    params: any[];
     currentItem: any;
     currentItemIndex: number;
     searchModel: any;
@@ -21,4 +23,5 @@ interface IResourceService{
     getItem(params:any):ng.IPromise<any>;
     updateItem(params:any, item:any):ng.IPromise<any>;
     deleteItem(params:any, item:any):ng.IPromise<any> ;
+    setParameters(params:any);
 }

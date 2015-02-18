@@ -1,6 +1,6 @@
 ///<reference path='cheese.d.ts' />
 var ResourceService = (function () {
-    function ResourceService($resource, $injector) {
+    function ResourceService($injector, $resource) {
         this.metadata = [];
         "use strict";
     }
@@ -32,7 +32,9 @@ var ResourceService = (function () {
         "use strict";
         return null;
     };
+    ResourceService.prototype.setParameters = function (params) {
+        "use strict";
+    };
     return ResourceService;
 })();
-angular.module('cheese').factory('ResourceService', ['$resource', '$injector', function ($resource, $injector) { return new ResourceService($resource, $injector); }]);
-//# sourceMappingURL=resource-service.js.map
+angular.module('cheese').factory('ResourceService', ['$injector', '$resource', ResourceService]);

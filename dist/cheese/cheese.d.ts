@@ -19,6 +19,8 @@ interface IResourceService {
     type: string;
     resource: any;
     items: any[];
+    parent: any;
+    params: any[];
     currentItem: any;
     currentItemIndex: number;
     searchModel: any;
@@ -32,6 +34,7 @@ interface IResourceService {
     getItem(params: any): ng.IPromise<any>;
     updateItem(params: any, item: any): ng.IPromise<any>;
     deleteItem(params: any, item: any): ng.IPromise<any>;
+    setParameters(params: any): any;
 }
 /**
  * Created by e1040222 on 10/6/2014.
@@ -57,12 +60,13 @@ declare class PageInfo {
  */
 interface IControllerContext {
     resourceName: string;
-    formTag: string;
-    ngRefs: string[];
-    resourceService: any;
-    metadataService: any;
-    title?: string;
-    viewId?: string;
+    resourceNameSingular: string;
+    resourceScope: string;
+    resourceService: IResourceService;
+    metadataService: IMetadataService;
+    pageTitle: string;
+    viewId: string;
+    dependencies: any;
 }
 /**
  * Created by Bob on 5/5/2014.
@@ -95,8 +99,9 @@ declare class BaseController {
     pathFields: any;
     activeTab: number;
     clearSearchModel(): void;
-    static addNgRef(context: any, item: any): void;
-    constructor($injector: any, context: IControllerContext);
+    static addDependency(context: any, item: any): void;
+    static $inject: string[];
+    constructor($injector: any, resourceService: IResourceService, metadataService: IMetadataService);
     getActiveTab(): number;
     init(): void;
     loadData(): void;
@@ -156,14 +161,14 @@ declare class BaseController {
  * Created by Bob on 5/6/2014.
  */
 declare class BaseDetailController extends BaseController {
-    constructor($injector: any, context: any);
+    init(): void;
     doSubmit(isValid: any): void;
 }
 /**
  * Created by Bob on 5/6/2014.
  */
 declare class BaseEditController extends BaseController {
-    constructor($injector: any, context: any);
+    init(): void;
     getData(): void;
     doSubmit(isValid: any): void;
 }
@@ -171,6 +176,7 @@ declare class BaseEditController extends BaseController {
  * Created by Bob on 5/6/2014.
  */
 declare class BaseListController extends BaseController {
+    init(): void;
     getData(): void;
 }
 /**
@@ -184,7 +190,7 @@ declare class BaseNewController extends BaseController {
  * Created by Bob on 5/6/2014.
  */
 declare class BaseShowController extends BaseController {
-    constructor($injector: any, context: any);
+    init(): void;
     getData(): void;
     doSubmit(isValid: any): void;
 }

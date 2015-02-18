@@ -2,10 +2,12 @@
 
 class ResourceService implements IResourceService {
 
-    public name: string;
+    public name:string;
     public type: string;
     public resource: any;
     public items: any[];
+    public parent: any;
+    public params: any[];
     public currentItem: any;
     public currentItemIndex: number;
     public searchModel: any;
@@ -15,7 +17,7 @@ class ResourceService implements IResourceService {
     public config: any;
     public $injector: any;
 
-    constructor($resource, $injector) {
+    constructor($injector, $resource) {
         "use strict";
     }
 
@@ -53,6 +55,10 @@ class ResourceService implements IResourceService {
         "use strict";
         return null;
     }
+
+    public setParameters(params:any) {
+        "use strict";
+    }
 }
 
-angular.module('cheese').factory('ResourceService', ['$resource', '$injector', ($resource, $injector) => new ResourceService($resource, $injector)]);
+angular.module('cheese').factory('ResourceService', ['$injector', '$resource', ResourceService]);

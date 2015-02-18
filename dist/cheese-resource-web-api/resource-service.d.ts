@@ -1,7 +1,4 @@
 /// <reference path="../cheese/cheese.d.ts" />
-/**
- * Created by Bob on 5/4/2014.
- */
 declare class ResourceService implements IResourceService {
     name: string;
     type: string;
@@ -17,7 +14,7 @@ declare class ResourceService implements IResourceService {
     searchFilter: string;
     config: any;
     $injector: any;
-    constructor($resource: any, $injector: any);
+    constructor($injector: any, $resource: any);
     getList(params: any): ng.IPromise<any>;
     createItem(params: any, item: any): ng.IPromise<any>;
     getItem(params: any): ng.IPromise<any>;
@@ -31,5 +28,5 @@ declare class ResourceService implements IResourceService {
     onGetItemError(httpResponse: any): any;
     onUpdateItemSuccess(httpResponse: any): any;
     onUpdateItemError(httpResponse: any): any;
-    setParameters(params: any[]): void;
+    setParameters(params: any): void;
 }

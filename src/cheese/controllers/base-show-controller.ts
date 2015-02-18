@@ -8,10 +8,10 @@
 
 class BaseShowController extends BaseController {
 
-    constructor($injector, context){
+    init(){
         "use strict";
-        BaseController.addNgRef(context,'$stateParams');
-        super($injector, context);
+        this.context.resourceScope = "item";
+        super.init();
     }
 
     getData(){

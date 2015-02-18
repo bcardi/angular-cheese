@@ -12,13 +12,13 @@ class MetadataService implements IMetadataService {
     constructor($resource, $injector) {
         "use strict";
         this.config = $injector.get('ApplicationConfig');
-        var resourcePath = this.config.apiBasePath + 'api/metadata/:resourceName/:formTag';
+        var resourcePath = this.config.apiBasePath + 'api/metadata/:resourceName/:resourceScope';
         this.resource = $resource(resourcePath,{ },{ } );
     }
 
     public get(params):ng.IPromise<any> {
         "use strict";
-        return this.resource.get({resourceName: params.resourceName, formTag: params.formTag}).$promise;
+        return this.resource.get({resourceName: params.resourceName, resourceScope: params.resourceScope}).$promise;
     }
 }
 

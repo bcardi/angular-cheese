@@ -75,4 +75,3 @@ angular.module('cheese').service('Session', function () {
         this.roles = null;
     };
 });
-//# sourceMappingURL=auth-service.js.map

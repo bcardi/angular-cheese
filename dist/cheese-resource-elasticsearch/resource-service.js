@@ -1,10 +1,7 @@
 ///<reference path='../cheese/cheese.d.ts' /> 
 ///<reference path='references.ts' />
-/**
- * Created by e1009811 on 5/1/2014.
- */
 var ResourceService = (function () {
-    function ResourceService($resource, $injector) {
+    function ResourceService($injector, $resource) {
         var _this = this;
         this.metadata = [];
         "use strict";
@@ -137,11 +134,13 @@ var ResourceService = (function () {
         "use strict";
         return this.resource.delete({ resourceName: params.resourceName }, item).$promise;
     };
+    ResourceService.prototype.setParameters = function (params) {
+        "use strict";
+        this.params = params;
+    };
     return ResourceService;
 })();
-angular.module('cheese').factory('ResourceService', ['$resource', '$injector', function ($resource, $injector) {
-    new ResourceService($resource, $injector);
-}]);
+angular.module('cheese').factory('ResourceService', ['$injector', '$resource', ResourceService]);
 /*
  Create "_design/api" document in database
 
@@ -163,4 +162,3 @@ angular.module('cheese').factory('ResourceService', ['$resource', '$injector', f
  }
  }
  */
-//# sourceMappingURL=resource-service.js.map

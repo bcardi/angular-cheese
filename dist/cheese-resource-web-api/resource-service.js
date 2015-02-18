@@ -1,10 +1,7 @@
 ///<reference path='../cheese/cheese.d.ts' /> 
 ///<reference path='references.ts' />
-/**
- * Created by Bob on 5/4/2014.
- */
 var ResourceService = (function () {
-    function ResourceService($resource, $injector) {
+    function ResourceService($injector, $resource) {
         var _this = this;
         this.metadata = [];
         "use strict";
@@ -110,5 +107,4 @@ var ResourceService = (function () {
     };
     return ResourceService;
 })();
-angular.module('cheese').factory('ResourceService', ['$resource', '$injector', function ($resource, $injector) { return new ResourceService($resource, $injector); }]);
-//# sourceMappingURL=resource-service.js.map
+angular.module('cheese').factory('ResourceService', ['$injector', '$resource', ResourceService]);

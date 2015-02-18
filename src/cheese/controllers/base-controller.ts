@@ -15,7 +15,7 @@
 class BaseController {
     public ng: any;
 
-    public context: IControllerContext;
+    public context: IControllerContext = <IControllerContext>{};
     public resetFocus: boolean = true;
     public isModelLoaded: boolean = false;
     public showEditable: boolean = false;
@@ -36,24 +36,39 @@ class BaseController {
         this.searchModel = {};
     }
 
-    static addNgRef(context, item){
-        if (!context.ngRefs){
-            context.ngRefs = [];
+    static addDependency(context, item){
+        if (!context.dependencies){
+            context.dependencies = [];
         }
-        context.ngRefs.push(item);
+        context.dependencies.push(item);
     }
 
-    constructor($injector, context: IControllerContext) {
+    static $inject = ["$scope", "MyService"];
+
+    constructor($injector:any, resourceService: IResourceService, metadataService: IMetadataService) {
         "use strict";
 
         this.$injector = $injector;
-        this.context = context;
-        this.setPageTitle(this.getDefaultPageTitle());
+
+        this.context = this.context || <IControllerContext>{};
+
+        this.context.resourceService = resourceService;
+        this.context.metadataService = metadataService;
+
+        this.context.viewId = this.context.viewId || "default";
 
         // Load required angular references
-        var ngRefs = _.union(['$location', '$state', '$stateParams', 'Formatter'], this.context.ngRefs);
+        var dependencies = _.union(['cheeseResourceName', 'cheeseResourceNameSingular', '$location', '$state', '$stateParams', 'Formatter'], this.context.dependencies);
         this.ng = {};
-        _.forEach(ngRefs, item => this.ng[item] = $injector.get(item));
+        _.forEach(dependencies, item => this.ng[item] = $injector.get(item));
+
+        if (this.ng.cheeseResourceName) {
+            this.context.resourceName = this.context.resourceName || this.ng.cheeseResourceName;
+        }
+
+        if (this.ng.cheeseResourceNameSingular) {
+            this.context.resourceNameSingular = this.context.resourceNameSingular || this.ng.cheeseResourceNameSingular;
+        }
 
         if (_.size(this.getParameters()) > 0) {
             this.autoLoad = true;
@@ -61,6 +76,9 @@ class BaseController {
         }
 
         this.init();
+
+        this.setPageTitle(this.getDefaultPageTitle());
+
         //this.refreshMetadata({});
         this.loadData();
     }
@@ -83,10 +101,10 @@ class BaseController {
         "use strict";
 
         var cachedMetadata = {};
-        try {cachedMetadata = this.context.resourceService.metadata[this.context.formTag]} catch(e) {}
+        try {cachedMetadata = this.context.resourceService.metadata[this.context.resourceScope]} catch(e) {}
         if (_.isEmpty(cachedMetadata)){
             this.context.metadataService
-                .get({resourceName: this.context.resourceName, formTag: this.context.formTag})
+                .get({resourceName: this.context.resourceName, resourceScope: this.context.resourceScope})
                 .then(result => this.onGetFormMetadataSuccess(result))
                 .catch(result => this.onGetFormMetadataError(result));
         } else {
@@ -320,7 +338,7 @@ class BaseController {
             this.metadata = {};
             _.merge(this.metadata, this.metadataBase, metadata);
         }
-        try {this.context.resourceService.metadata[this.context.formTag] = this.metadata} catch(e) {};
+        try {this.context.resourceService.metadata[this.context.resourceScope] = this.metadata} catch(e) {};
     }
 
     public onGetItemError(result): void {
@@ -449,24 +467,24 @@ class BaseController {
     }
 
     public getDefaultPageTitle(): string {
-        if (this.context.title) {
-            return this.context.title;
+        if (this.context.pageTitle) {
+            return this.context.pageTitle;
         }
         var resource = this.context.resourceName.substring(0, 1).toUpperCase() + this.context.resourceName.substring(1, this.context.resourceName.length-1);
-        var type = this.context.formTag.substring(0, 1).toUpperCase() + this.context.formTag.substring(1);
-        var title;
+        var type = this.context.resourceScope.substring(0, 1).toUpperCase() + this.context.resourceScope.substring(1);
+        var pageTitle;
         switch (type) {
             case 'List':
-                title = resource + ' Search';
+                pageTitle = resource + ' Search';
                 break;
             case 'Detail':
-                title = resource + ' Detail';
+                pageTitle = resource + ' Detail';
                 break;
             default:
-                title = resource;
+                pageTitle = resource;
 
         }
-        return title;
+        return pageTitle;
     }
 
     public setPageTitle(pageName: string): void {
@@ -499,7 +517,7 @@ class BaseController {
             layout: this.metadata.views[this.context.viewId].layout
         };
 
-        this.$injector.get('$http').post(this.$injector.get('ApplicationConfig').apiBasePath + 'api/metadata/' + this.context.resourceName + '/' + this.context.formTag, object);
+        this.$injector.get('$http').post(this.$injector.get('ApplicationConfig').apiBasePath + 'api/metadata/' + this.context.resourceName + '/' + this.context.resourceScope, object);
     }
 
     public cancelTileLayout() {
@@ -515,7 +533,7 @@ class BaseController {
         var field = 'views.'+this.context.viewId+'.layout';
         var object = {};
         object[field] = this.metadata.views[this.context.viewId].layout;
-        this.$injector.get('$http').post(this.$injector.get('ApplicationConfig').apiBasePath + 'api/metadata/' + this.context.resourceName + '/' + this.context.formTag, object);
+        this.$injector.get('$http').post(this.$injector.get('ApplicationConfig').apiBasePath + 'api/metadata/' + this.context.resourceName + '/' + this.context.resourceScope, object);
     }
 
 }
