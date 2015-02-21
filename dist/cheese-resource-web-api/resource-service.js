@@ -96,7 +96,7 @@ var ResourceService = (function () {
 
     ResourceService.prototype.deleteItem = function (params, item) {
         "use strict";
-        return this.resource.delete({ resourceName: params.resourceName }, { id: item.userId }).$promise;
+        return this.resource.delete({ resourceName: params.resourceName }, { id: item.id }).$promise;
     };
 
     ResourceService.prototype.onDeleteItemSuccess = function (httpResponse) {

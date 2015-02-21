@@ -98,7 +98,7 @@ class ResourceService implements IResourceService {
 
     public deleteItem(params, item):ng.IPromise<any> {
         "use strict";
-        return this.resource.delete({resourceName: params.resourceName}, {id: item.userId}).$promise;
+        return this.resource.delete({resourceName: params.resourceName}, {id: item.id}).$promise;
     }
 
     public onDeleteItemSuccess(httpResponse:any):any {
