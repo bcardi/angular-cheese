@@ -53,8 +53,8 @@ class ResourceService implements IResourceService {
                     method: 'POST'
                 },
                 delete: {
-                    url: this.config.apiBasePath + 'api/:resourceName/:id/delete',
-                    method: 'POST',
+                    url: this.config.apiBasePath + 'api/:resourceName/:id',
+                    method: 'DELETE',
                     interceptor: {
                         response: (httpResponse) => this.onDeleteItemSuccess(httpResponse),
                         responseError: (httpResponse) => this.onDeleteItemError(httpResponse)

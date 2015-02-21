@@ -1,4 +1,4 @@
-///<reference path='../cheese/cheese.d.ts' /> 
+///<reference path='../cheese/cheese.d.ts' />
 ///<reference path='references.ts' />
 var ResourceService = (function () {
     function ResourceService($injector, $resource) {
@@ -41,6 +41,7 @@ var ResourceService = (function () {
                 transformResponse: function (data) {
                     //console.log(data);
                     var response = angular.fromJson(data);
+
                     //console.log(response);
                     var result = [];
                     for (var i = 0, max = response.hits.total; i < max; i++) {
@@ -72,6 +73,7 @@ var ResourceService = (function () {
                     var response = angular.fromJson(data);
                     var result = response._source;
                     result["id"] = response._id;
+
                     //console.log(result);
                     return result;
                 }
@@ -87,9 +89,11 @@ var ResourceService = (function () {
         this.items = httpResponse.data;
         return this.items;
     };
+
     ResourceService.prototype.onGetListError = function (httpResponse) {
         return httpResponse.data;
     };
+
     ResourceService.prototype.getList = function (params) {
         "use strict";
         var q = "";
@@ -100,6 +104,7 @@ var ResourceService = (function () {
                 }
             }
         }
+
         //console.log("q="+q);
         var queryParams = { resourceName: params.resourceName };
         if (q) {
@@ -108,57 +113,61 @@ var ResourceService = (function () {
         queryParams["size"] = 1000000;
         return this.resource.query(queryParams).$promise;
     };
+
     ResourceService.prototype.createItem = function (params, item) {
-        "use strict";
         var _this = this;
+        "use strict";
+
         //var _this = this;
         if (item.id) {
             return this.resource.create({ resourceName: params.resourceName }, item).$promise;
-        }
-        else {
+        } else {
             return this.resource.counter({}, { resourceName: params.resourceName }).$promise.then(function (data) {
                 item.id = '' + data._version;
                 return _this.resource.create({ resourceName: params.resourceName }, item).$promise;
             });
         }
     };
+
     ResourceService.prototype.getItem = function (params) {
         "use strict";
         return this.resource.get({ resourceName: params.resourceName }, { id: params.id }).$promise;
     };
+
     ResourceService.prototype.updateItem = function (params, item) {
         "use strict";
         return this.resource.update({ resourceName: params.resourceName }, item).$promise;
     };
+
     ResourceService.prototype.deleteItem = function (params, item) {
         "use strict";
         return this.resource.delete({ resourceName: params.resourceName }, item).$promise;
     };
+
     ResourceService.prototype.setParameters = function (params) {
         "use strict";
         this.params = params;
     };
     return ResourceService;
 })();
+
 angular.module('cheese').factory('ResourceService', ['$injector', '$resource', ResourceService]);
 /*
- Create "_design/api" document in database
-
- curl -X PUT http://127.0.0.1:5984/work-requests
- curl -X PUT http://127.0.0.1:5984/work-requests/_design/api --data-binary @mydesign.json
-
- {
- "_id": "_design/api",
- "lists": {
- "all": "function(head, req) { var values = []; while (row = getRow()) { values.push(row.value); } return JSON.stringify(values); }"
- },
- "shows": {
- "detail": "function(doc, req) { var myDoc = JSON.parse(JSON.stringify( doc )); delete myDoc['_revisions']; myDoc.id = myDoc._id; return { 'json': myDoc }; }"
- },
- "views": {
- "default": {
- "map": "function (doc){ var myDoc = JSON.parse(JSON.stringify( doc )); myDoc.id = myDoc._id; emit(myDoc._id, myDoc); }"
- }
- }
- }
- */
+Create "_design/api" document in database
+curl -X PUT http://127.0.0.1:5984/work-requests
+curl -X PUT http://127.0.0.1:5984/work-requests/_design/api --data-binary @mydesign.json
+{
+"_id": "_design/api",
+"lists": {
+"all": "function(head, req) { var values = []; while (row = getRow()) { values.push(row.value); } return JSON.stringify(values); }"
+},
+"shows": {
+"detail": "function(doc, req) { var myDoc = JSON.parse(JSON.stringify( doc )); delete myDoc['_revisions']; myDoc.id = myDoc._id; return { 'json': myDoc }; }"
+},
+"views": {
+"default": {
+"map": "function (doc){ var myDoc = JSON.parse(JSON.stringify( doc )); myDoc.id = myDoc._id; emit(myDoc._id, myDoc); }"
+}
+}
+}
+*/

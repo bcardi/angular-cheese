@@ -9,4 +9,7 @@ var MetadataService = (function () {
     };
     return MetadataService;
 })();
-angular.module('cheese').factory('MetadataService', ['$resource', function ($resource) { return new MetadataService($resource); }]);
+
+angular.module('cheese').factory('MetadataService', ['$resource', function ($resource) {
+        return new MetadataService($resource);
+    }]);

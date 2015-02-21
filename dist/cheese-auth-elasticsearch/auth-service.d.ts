@@ -1,17 +1,17 @@
 /// <reference path="../cheese/cheese.d.ts" />
 /**
- * Created by Bob on 5/4/2014.
- */
+* Created by Bob on 5/4/2014.
+*/
 declare class AuthService implements IAuthService {
-    name: string;
-    type: string;
-    resource: any;
-    session: any;
-    metadata: any[];
-    config: any;
+    public name: string;
+    public type: string;
+    public resource: any;
+    public session: any;
+    public metadata: any[];
+    public config: any;
     constructor($resource: any, $injector: any, Session: any);
-    login(credentials: any): ng.IPromise<any>;
-    logout(credentials: any): ng.IPromise<any>;
-    isAuthenticated(): boolean;
-    isAuthorized(authorizedRoles: any): boolean;
+    public login(credentials: any): ng.IPromise<any>;
+    public logout(credentials: any): ng.IPromise<any>;
+    public isAuthenticated(): boolean;
+    public isAuthorized(authorizedRoles: any): boolean;
 }

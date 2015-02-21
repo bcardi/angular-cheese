@@ -1,8 +1,8 @@
-///<reference path='../cheese/cheese.d.ts' /> 
+///<reference path='../cheese/cheese.d.ts' />
 ///<reference path='references.ts' />
 /**
- * Created by Bob on 5/4/2014.
- */
+* Created by Bob on 5/4/2014.
+*/
 var AuthService = (function () {
     function AuthService($resource, $injector, Session) {
         this.metadata = [];
@@ -29,13 +29,16 @@ var AuthService = (function () {
             return res.data.user;
         });
     };
+
     AuthService.prototype.logout = function (credentials) {
         this.session.destroy();
         return this.resource.logout({}, credentials);
     };
+
     AuthService.prototype.isAuthenticated = function () {
         return !!this.session && !!this.session.userId;
     };
+
     AuthService.prototype.isAuthorized = function (permissions) {
         if (!permissions) {
             return true;
@@ -43,14 +46,20 @@ var AuthService = (function () {
         if (!angular.isArray(permissions)) {
             permissions = [permissions];
         }
+
         var hasAccess = _.find(this.session.permissions, function (permission) {
             return permissions.indexOf(permission) > -1;
         }) != null;
+
         return this.isAuthenticated() && hasAccess;
     };
     return AuthService;
 })();
-angular.module('cheese').factory('AuthService', ['$resource', '$injector', 'Session', function ($resource, $injector, Session) { return new AuthService($resource, $injector, Session); }]);
+
+angular.module('cheese').factory('AuthService', ['$resource', '$injector', 'Session', function ($resource, $injector, Session) {
+        return new AuthService($resource, $injector, Session);
+    }]);
+
 angular.module('cheese').service('Session', function () {
     this.create = function (sessionId, userId, roles, permissions, landingPage) {
         this.id = sessionId;

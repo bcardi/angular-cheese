@@ -1,24 +1,24 @@
 /// <reference path="../cheese/cheese.d.ts" />
 declare class ResourceService implements IResourceService {
-    name: string;
-    type: string;
-    resource: any;
-    items: any[];
-    parent: any;
-    params: any[];
-    currentItem: any;
-    currentItemIndex: number;
-    searchModel: any;
-    getListTime: any;
-    metadata: any[];
-    searchFilter: string;
-    config: any;
-    $injector: any;
+    public name: string;
+    public type: string;
+    public resource: any;
+    public items: any[];
+    public parent: any;
+    public params: any[];
+    public currentItem: any;
+    public currentItemIndex: number;
+    public searchModel: any;
+    public getListTime: any;
+    public metadata: any[];
+    public searchFilter: string;
+    public config: any;
+    public $injector: any;
     constructor($injector: any, $resource: any);
-    getList(params: any): ng.IPromise<any>;
-    createItem(params: any, item: any): ng.IPromise<any>;
-    getItem(params: any): ng.IPromise<any>;
-    updateItem(params: any, item: any): ng.IPromise<any>;
-    deleteItem(params: any, item: any): ng.IPromise<any>;
-    setParameters(params: any): void;
+    public getList(params: any): ng.IPromise<any>;
+    public createItem(params: any, item: any): ng.IPromise<any>;
+    public getItem(params: any): ng.IPromise<any>;
+    public updateItem(params: any, item: any): ng.IPromise<any>;
+    public deleteItem(params: any, item: any): ng.IPromise<any>;
+    public setParameters(params: any): void;
 }
