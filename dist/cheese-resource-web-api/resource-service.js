@@ -12,7 +12,7 @@ var ResourceService = (function () {
         this.resource = $resource(this.config.apiBasePath + 'api/:resourceName/:id', { id: '@id' }, {
             update: {
                 url: this.config.apiBasePath + 'api/:resourceName/:id/:action',
-                method: 'POST',
+                method: 'PUT',
                 interceptor: {
                     response: function (httpResponse) {
                         return _this.onUpdateItemSuccess(httpResponse);

@@ -28,7 +28,7 @@ class ResourceService implements IResourceService {
             {
                 update: {
                     url: this.config.apiBasePath + 'api/:resourceName/:id/:action',
-                    method: 'POST',
+                    method: 'PUT',
                     interceptor: {
                         response: (httpResponse) => this.onUpdateItemSuccess(httpResponse),
                         responseError: (httpResponse) => this.onUpdateItemError(httpResponse)
